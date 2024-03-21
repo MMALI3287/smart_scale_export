@@ -11,6 +11,7 @@ import 'package:share/share.dart';
 import 'package:smart_scale_export/app_provider.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:smart_scale_export/tab_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -69,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 key: _globalKeyWeekly,
                 child: SizedBox(
                   height: 200,
+                  width: 350,
                   child: LineChart(
                     LineChartData(
                       minX: 0,
@@ -110,39 +112,41 @@ class _MyHomePageState extends State<MyHomePage> {
               RepaintBoundary(
                 key: _globalKeyMonthly,
                 child: SizedBox(
-                    height: 200,
-                    child: PieChart(
-                      PieChartData(
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: [
-                          PieChartSectionData(
-                            color: Colors.red,
-                            value: 10,
-                            title: 'Carb',
-                            radius: 50,
-                          ),
-                          PieChartSectionData(
-                            color: Colors.green,
-                            value: 20,
-                            title: 'Protein',
-                            radius: 50,
-                          ),
-                          PieChartSectionData(
-                            color: Colors.blue,
-                            value: 30,
-                            title: 'Vitamin',
-                            radius: 50,
-                          ),
-                          PieChartSectionData(
-                            color: Colors.yellow,
-                            value: 40,
-                            title: 'Oil',
-                            radius: 50,
-                          ),
-                        ],
-                      ),
-                    )),
+                  height: 200,
+                  width: 350,
+                  child: PieChart(
+                    PieChartData(
+                      sectionsSpace: 0,
+                      centerSpaceRadius: 40,
+                      sections: [
+                        PieChartSectionData(
+                          color: Colors.red,
+                          value: 10,
+                          title: 'Carb',
+                          radius: 50,
+                        ),
+                        PieChartSectionData(
+                          color: Colors.green,
+                          value: 20,
+                          title: 'Protein',
+                          radius: 50,
+                        ),
+                        PieChartSectionData(
+                          color: Colors.blue,
+                          value: 30,
+                          title: 'Vitamin',
+                          radius: 50,
+                        ),
+                        PieChartSectionData(
+                          color: Colors.yellow,
+                          value: 40,
+                          title: 'Oil',
+                          radius: 50,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 30,
@@ -151,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 key: _globalKeyYearly,
                 child: SizedBox(
                   height: 200,
+                  width: 350,
                   child: LineChart(
                     LineChartData(
                       minX: 0,
@@ -219,6 +224,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       mimeTypes: ['application/pdf']);
                 },
                 child: const Text('Share PDF'),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => tab_view(),
+                    ),
+                  );
+                },
+                child: const Text('Tab View'),
               ),
             ],
           ),
