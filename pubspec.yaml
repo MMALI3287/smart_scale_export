@@ -1,0 +1,33 @@
+name: smart_scale_export
+description: "A new Flutter project."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  pdf: ^3.10.8
+  flutter_to_pdf: ^0.1.1
+  printing: ^5.12.0
+  fl_chart: ^0.66.2
+  provider: ^6.0.1
+  share: ^2.0.4
+  path_provider: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - Assets/Images/image.png
