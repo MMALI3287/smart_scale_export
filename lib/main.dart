@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -7,11 +7,10 @@ import 'package:printing/printing.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:smart_scale_export/monthly_tabs.dart';
+import 'package:smart_scale_export/weekly_tabs.dart';
 import 'package:smart_scale_export/app_provider.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:smart_scale_export/tab_view.dart';
+import 'package:smart_scale_export/yearly_tabs.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,215 +31,613 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Widget to PDF'),
+        home: const tab_view(),
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class tab_view extends StatefulWidget {
+  const tab_view({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<tab_view> createState() => _tab_viewState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  GlobalKey _globalKeyWeekly = GlobalKey();
-  GlobalKey _globalKeyMonthly = GlobalKey();
-  GlobalKey _globalKeyYearly = GlobalKey();
+class _tab_viewState extends State<tab_view> {
+  final GlobalKey _globalKeyWeekly = GlobalKey();
+  final GlobalKey _globalKeyMonthly = GlobalKey();
+  final GlobalKey _globalKeyYearly = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(
-                height: 30,
-              ),
-              RepaintBoundary(
-                key: _globalKeyWeekly,
-                child: SizedBox(
-                  height: 200,
-                  width: 350,
-                  child: LineChart(
-                    LineChartData(
-                      minX: 0,
-                      maxX: 100,
-                      minY: 0,
-                      maxY: 100,
-                      backgroundColor: Colors.black,
-                      lineTouchData: const LineTouchData(
-                        touchTooltipData: LineTouchTooltipData(
-                          tooltipBgColor: Colors.white,
-                          tooltipMargin: 10,
-                        ),
-                        handleBuiltInTouches: false,
-                      ),
-                      lineBarsData: [
-                        LineChartBarData(
-                          spots: [
-                            const FlSpot(0, 3),
-                            const FlSpot(33, 64),
-                            const FlSpot(53, 39),
-                            const FlSpot(68, 74),
-                            const FlSpot(95, 11),
-                          ],
-                          isCurved: true,
-                          color: Colors.white,
-                          barWidth: 2,
-                          isStrokeCapRound: true,
-                          dotData: const FlDotData(show: false),
-                          belowBarData: BarAreaData(show: false),
-                        )
-                      ],
-                    ),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          title: Text('PDF Export', style: TextStyle(color: Colors.white)),
+          bottom: TabBar(
+            tabs: <Widget>[
+              Tab(
+                child: Container(
+                  child: const Text(
+                    'Weekly',
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              RepaintBoundary(
-                key: _globalKeyMonthly,
-                child: SizedBox(
-                  height: 200,
-                  width: 350,
-                  child: PieChart(
-                    PieChartData(
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                      sections: [
-                        PieChartSectionData(
-                          color: Colors.red,
-                          value: 10,
-                          title: 'Carb',
-                          radius: 50,
-                        ),
-                        PieChartSectionData(
-                          color: Colors.green,
-                          value: 20,
-                          title: 'Protein',
-                          radius: 50,
-                        ),
-                        PieChartSectionData(
-                          color: Colors.blue,
-                          value: 30,
-                          title: 'Vitamin',
-                          radius: 50,
-                        ),
-                        PieChartSectionData(
-                          color: Colors.yellow,
-                          value: 40,
-                          title: 'Oil',
-                          radius: 50,
-                        ),
-                      ],
-                    ),
+              Tab(
+                child: Container(
+                  child: const Text(
+                    'Monthly',
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              RepaintBoundary(
-                key: _globalKeyYearly,
-                child: SizedBox(
-                  height: 200,
-                  width: 350,
-                  child: LineChart(
-                    LineChartData(
-                      minX: 0,
-                      maxX: 100,
-                      minY: context.watch<app_provider>().getWeight,
-                      maxY: 50,
-                      backgroundColor: Colors.black,
-                      lineTouchData: const LineTouchData(
-                        touchTooltipData: LineTouchTooltipData(
-                          tooltipBgColor: Colors.white,
-                          tooltipMargin: 10,
-                        ),
-                        handleBuiltInTouches: false,
-                      ),
-                      lineBarsData: [
-                        LineChartBarData(
-                          spots: [
-                            FlSpot(
-                                (context.watch<app_provider>().getWeight), 3),
-                            const FlSpot(15, 30),
-                            const FlSpot(95, 15),
-                            const FlSpot(35, 40),
-                            const FlSpot(50, 45),
-                          ],
-                          isCurved: true,
-                          color: Colors.white,
-                          barWidth: 2,
-                          isStrokeCapRound: true,
-                          dotData: const FlDotData(show: false),
-                          belowBarData: BarAreaData(show: false),
-                        )
-                      ],
-                    ),
+              Tab(
+                child: Container(
+                  child: const Text(
+                    'Yearly',
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              ElevatedButton(
-                onPressed: () => printDoc(),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.yellow),
-                  elevation: MaterialStateProperty.all(10),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                child: const Text('Save To PDF'),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              ElevatedButton(
-                onPressed: () => {
-                  context.read<app_provider>().setWeight(10.0),
-                },
-                child: const Text("change weight"),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  final path = await shareDoc();
-                  await Share.shareFiles([path],
-                      mimeTypes: ['application/pdf']);
-                },
-                child: const Text('Share PDF'),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => tab_view(),
-                    ),
-                  );
-                },
-                child: const Text('Tab View'),
               ),
             ],
           ),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            weeklyTabs(),
+            monthlyTabs(),
+            yearlyTabs(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  weeklyTabs() {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          bottom: const TabBar(
+            isScrollable: true,
+            indicatorWeight: 6.0,
+            indicatorColor: Colors.red,
+            unselectedLabelColor: Colors.black,
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(
+                  Icons.monitor_weight_outlined,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Weight',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.favorite_outline,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'BMI',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.auto_graph,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Calorie',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: LineChart(
+                  LineChartData(
+                    minX: 0,
+                    maxX: 100,
+                    minY: 0,
+                    maxY: 100,
+                    backgroundColor: Colors.black,
+                    lineTouchData: const LineTouchData(
+                      touchTooltipData: LineTouchTooltipData(
+                        tooltipBgColor: Colors.white,
+                        tooltipMargin: 10,
+                      ),
+                      handleBuiltInTouches: false,
+                    ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: [
+                          const FlSpot(0, 3),
+                          const FlSpot(33, 64),
+                          const FlSpot(53, 39),
+                          const FlSpot(68, 74),
+                          const FlSpot(95, 11),
+                        ],
+                        isCurved: true,
+                        color: Colors.white,
+                        barWidth: 2,
+                        isStrokeCapRound: true,
+                        dotData: const FlDotData(show: false),
+                        belowBarData: BarAreaData(show: false),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: LineChart(
+                  LineChartData(
+                    minX: 0,
+                    maxX: 100,
+                    minY: 0,
+                    maxY: 100,
+                    backgroundColor: Colors.black,
+                    lineTouchData: const LineTouchData(
+                      touchTooltipData: LineTouchTooltipData(
+                        tooltipBgColor: Colors.white,
+                        tooltipMargin: 10,
+                      ),
+                      handleBuiltInTouches: false,
+                    ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: [
+                          const FlSpot(0, 3),
+                          const FlSpot(33, 64),
+                          const FlSpot(53, 39),
+                          const FlSpot(68, 74),
+                          const FlSpot(95, 11),
+                        ],
+                        isCurved: true,
+                        color: Colors.white,
+                        barWidth: 2,
+                        isStrokeCapRound: true,
+                        dotData: const FlDotData(show: false),
+                        belowBarData: BarAreaData(show: false),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: LineChart(
+                  LineChartData(
+                    minX: 0,
+                    maxX: 100,
+                    minY: context.watch<app_provider>().getWeight,
+                    maxY: 50,
+                    backgroundColor: Colors.black,
+                    lineTouchData: const LineTouchData(
+                      touchTooltipData: LineTouchTooltipData(
+                        tooltipBgColor: Colors.white,
+                        tooltipMargin: 10,
+                      ),
+                      handleBuiltInTouches: false,
+                    ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: [
+                          FlSpot((context.watch<app_provider>().getWeight), 3),
+                          const FlSpot(15, 30),
+                          const FlSpot(95, 15),
+                          const FlSpot(35, 40),
+                          const FlSpot(50, 45),
+                        ],
+                        isCurved: true,
+                        color: Colors.white,
+                        barWidth: 2,
+                        isStrokeCapRound: true,
+                        dotData: const FlDotData(show: false),
+                        belowBarData: BarAreaData(show: false),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const WeeklyTabs(
+                  title: 'Widget to PDF',
+                ),
+              ),
+            );
+          },
+          child: const Icon(Icons.print),
+        ),
+      ),
+    );
+  }
+
+  monthlyTabs() {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          bottom: const TabBar(
+            isScrollable: true,
+            indicatorWeight: 6.0,
+            indicatorColor: Colors.red,
+            unselectedLabelColor: Colors.black,
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(
+                  Icons.monitor_weight_outlined,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Weight',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.favorite_outline,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'BMI',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.auto_graph,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Calorie',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: LineChart(
+                  LineChartData(
+                    minX: 0,
+                    maxX: 100,
+                    minY: 0,
+                    maxY: 100,
+                    backgroundColor: Colors.black,
+                    lineTouchData: const LineTouchData(
+                      touchTooltipData: LineTouchTooltipData(
+                        tooltipBgColor: Colors.white,
+                        tooltipMargin: 10,
+                      ),
+                      handleBuiltInTouches: false,
+                    ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: [
+                          const FlSpot(0, 3),
+                          const FlSpot(33, 64),
+                          const FlSpot(53, 39),
+                          const FlSpot(68, 74),
+                          const FlSpot(95, 11),
+                        ],
+                        isCurved: true,
+                        color: Colors.white,
+                        barWidth: 2,
+                        isStrokeCapRound: true,
+                        dotData: const FlDotData(show: false),
+                        belowBarData: BarAreaData(show: false),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: LineChart(
+                  LineChartData(
+                    minX: 0,
+                    maxX: 100,
+                    minY: 0,
+                    maxY: 100,
+                    backgroundColor: Colors.black,
+                    lineTouchData: const LineTouchData(
+                      touchTooltipData: LineTouchTooltipData(
+                        tooltipBgColor: Colors.white,
+                        tooltipMargin: 10,
+                      ),
+                      handleBuiltInTouches: false,
+                    ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: [
+                          const FlSpot(0, 3),
+                          const FlSpot(33, 64),
+                          const FlSpot(53, 39),
+                          const FlSpot(68, 74),
+                          const FlSpot(95, 11),
+                        ],
+                        isCurved: true,
+                        color: Colors.white,
+                        barWidth: 2,
+                        isStrokeCapRound: true,
+                        dotData: const FlDotData(show: false),
+                        belowBarData: BarAreaData(show: false),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: LineChart(
+                  LineChartData(
+                    minX: 0,
+                    maxX: 100,
+                    minY: context.watch<app_provider>().getWeight,
+                    maxY: 50,
+                    backgroundColor: Colors.black,
+                    lineTouchData: const LineTouchData(
+                      touchTooltipData: LineTouchTooltipData(
+                        tooltipBgColor: Colors.white,
+                        tooltipMargin: 10,
+                      ),
+                      handleBuiltInTouches: false,
+                    ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: [
+                          FlSpot((context.watch<app_provider>().getWeight), 3),
+                          const FlSpot(15, 30),
+                          const FlSpot(95, 15),
+                          const FlSpot(35, 40),
+                          const FlSpot(50, 45),
+                        ],
+                        isCurved: true,
+                        color: Colors.white,
+                        barWidth: 2,
+                        isStrokeCapRound: true,
+                        dotData: const FlDotData(show: false),
+                        belowBarData: BarAreaData(show: false),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MonthlyTabs(
+                  title: 'Widget to PDF',
+                ),
+              ),
+            );
+          },
+          child: const Icon(Icons.print),
+        ),
+      ),
+    );
+  }
+
+  yearlyTabs() {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          bottom: const TabBar(
+            isScrollable: true,
+            indicatorWeight: 6.0,
+            indicatorColor: Colors.red,
+            unselectedLabelColor: Colors.black,
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(
+                  Icons.monitor_weight_outlined,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Weight',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.favorite_outline,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'BMI',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.auto_graph,
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Calorie',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: PieChart(
+                  PieChartData(
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 40,
+                    sections: [
+                      PieChartSectionData(
+                        color: Colors.red,
+                        value: 10,
+                        title: 'Carb',
+                        radius: 50,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.green,
+                        value: 20,
+                        title: 'Protein',
+                        radius: 50,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.blue,
+                        value: 30,
+                        title: 'Vitamin',
+                        radius: 50,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.yellow,
+                        value: 40,
+                        title: 'Oil',
+                        radius: 50,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: PieChart(
+                  PieChartData(
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 40,
+                    sections: [
+                      PieChartSectionData(
+                        color: Colors.red,
+                        value: 25,
+                        title: 'Carb',
+                        radius: 25,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.green,
+                        value: 5,
+                        title: 'Protein',
+                        radius: 35,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.blue,
+                        value: 25,
+                        title: 'Vitamin',
+                        radius: 10,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.yellow,
+                        value: 45,
+                        title: 'Oil',
+                        radius: 60,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.1,
+                child: PieChart(
+                  PieChartData(
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 40,
+                    sections: [
+                      PieChartSectionData(
+                        color: Colors.red,
+                        value: 10,
+                        title: 'Carb',
+                        radius: 50,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.green,
+                        value: 10,
+                        title: 'Protein',
+                        radius: 50,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.blue,
+                        value: 35,
+                        title: 'Vitamin',
+                        radius: 50,
+                      ),
+                      PieChartSectionData(
+                        color: Colors.yellow,
+                        value: 95,
+                        title: 'Oil',
+                        radius: 50,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const YearlyTabs(
+                  title: 'Widget to PDF',
+                ),
+              ),
+            );
+          },
+          child: const Icon(Icons.print),
         ),
       ),
     );
@@ -282,19 +679,14 @@ class _MyHomePageState extends State<MyHomePage> {
         onLayout: (PdfPageFormat format) async => doc.save());
   }
 
-  Future<String> shareDoc() async {
-    final doc = await getPDF();
-    final output = await getTemporaryDirectory();
-    final file = File("${output.path}/ExportedData.pdf");
-    await file.writeAsBytes(await doc.save());
-
-    return file.path;
-  }
-
   Future<ui.Image> _captureImage(GlobalKey key) async {
-    RenderRepaintBoundary boundary =
-        key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    return await boundary.toImage();
+    if (key.currentContext != null) {
+      RenderRepaintBoundary boundary =
+          key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      return await boundary.toImage();
+    } else {
+      throw Exception('Key is not attached to an element in the tree.');
+    }
   }
 
   Future<Uint8List> _imageToPngBytes(ui.Image image) async {

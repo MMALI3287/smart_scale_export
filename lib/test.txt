@@ -1,0 +1,121 @@
+TabBarView(
+            children: [
+              Center(
+                child: SizedBox(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  child: LineChart(
+                    LineChartData(
+                      minX: 0,
+                      maxX: 100,
+                      minY: 0,
+                      maxY: 100,
+                      backgroundColor: Colors.black,
+                      lineTouchData: const LineTouchData(
+                        touchTooltipData: LineTouchTooltipData(
+                          tooltipBgColor: Colors.white,
+                          tooltipMargin: 10,
+                        ),
+                        handleBuiltInTouches: false,
+                      ),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: [
+                            const FlSpot(0, 3),
+                            const FlSpot(33, 64),
+                            const FlSpot(53, 39),
+                            const FlSpot(68, 74),
+                            const FlSpot(95, 11),
+                          ],
+                          isCurved: true,
+                          color: Colors.white,
+                          barWidth: 2,
+                          isStrokeCapRound: true,
+                          dotData: const FlDotData(show: false),
+                          belowBarData: BarAreaData(show: false),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: SizedBox(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  child: LineChart(
+                    LineChartData(
+                      minX: 0,
+                      maxX: 100,
+                      minY: 0,
+                      maxY: 100,
+                      backgroundColor: Colors.black,
+                      lineTouchData: const LineTouchData(
+                        touchTooltipData: LineTouchTooltipData(
+                          tooltipBgColor: Colors.white,
+                          tooltipMargin: 10,
+                        ),
+                        handleBuiltInTouches: false,
+                      ),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: [
+                            const FlSpot(0, 3),
+                            const FlSpot(33, 64),
+                            const FlSpot(53, 39),
+                            const FlSpot(68, 74),
+                            const FlSpot(95, 11),
+                          ],
+                          isCurved: true,
+                          color: Colors.white,
+                          barWidth: 2,
+                          isStrokeCapRound: true,
+                          dotData: const FlDotData(show: false),
+                          belowBarData: BarAreaData(show: false),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: SizedBox(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  child: LineChart(
+                    LineChartData(
+                      minX: 0,
+                      maxX: 100,
+                      minY: context.watch<app_provider>().getWeight,
+                      maxY: 50,
+                      backgroundColor: Colors.black,
+                      lineTouchData: const LineTouchData(
+                        touchTooltipData: LineTouchTooltipData(
+                          tooltipBgColor: Colors.white,
+                          tooltipMargin: 10,
+                        ),
+                        handleBuiltInTouches: false,
+                      ),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: [
+                            FlSpot(
+                                (context.watch<app_provider>().getWeight), 3),
+                            const FlSpot(15, 30),
+                            const FlSpot(95, 15),
+                            const FlSpot(35, 40),
+                            const FlSpot(50, 45),
+                          ],
+                          isCurved: true,
+                          color: Colors.white,
+                          barWidth: 2,
+                          isStrokeCapRound: true,
+                          dotData: const FlDotData(show: false),
+                          belowBarData: BarAreaData(show: false),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],),
