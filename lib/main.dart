@@ -31,20 +31,20 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
           useMaterial3: true,
         ),
-        home: const tab_view(),
+        home: const TabView(),
       ),
     );
   }
 }
 
-class tab_view extends StatefulWidget {
-  const tab_view({super.key});
+class TabView extends StatefulWidget {
+  const TabView({super.key});
 
   @override
-  State<tab_view> createState() => _tab_viewState();
+  State<TabView> createState() => _TabViewState();
 }
 
-class _tab_viewState extends State<tab_view> {
+class _TabViewState extends State<TabView> {
   final GlobalKey _globalKeyWeekly = GlobalKey();
   final GlobalKey _globalKeyMonthly = GlobalKey();
   final GlobalKey _globalKeyYearly = GlobalKey();
@@ -56,31 +56,26 @@ class _tab_viewState extends State<tab_view> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
-          title: Text('PDF Export', style: TextStyle(color: Colors.white)),
-          bottom: TabBar(
+          title:
+              const Text('PDF Export', style: TextStyle(color: Colors.white)),
+          bottom: const TabBar(
             tabs: <Widget>[
               Tab(
-                child: Container(
-                  child: const Text(
-                    'Weekly',
-                    style: TextStyle(color: Colors.white, fontSize: 18.0),
-                  ),
+                child: Text(
+                  'Weekly',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
                 ),
               ),
               Tab(
-                child: Container(
-                  child: const Text(
-                    'Monthly',
-                    style: TextStyle(color: Colors.white, fontSize: 18.0),
-                  ),
+                child: Text(
+                  'Monthly',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
                 ),
               ),
               Tab(
-                child: Container(
-                  child: const Text(
-                    'Yearly',
-                    style: TextStyle(color: Colors.white, fontSize: 18.0),
-                  ),
+                child: Text(
+                  'Yearly',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
                 ),
               ),
             ],
@@ -157,7 +152,6 @@ class _tab_viewState extends State<tab_view> {
                     backgroundColor: Colors.black,
                     lineTouchData: const LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
-                        tooltipBgColor: Colors.white,
                         tooltipMargin: 10,
                       ),
                       handleBuiltInTouches: false,
@@ -196,7 +190,6 @@ class _tab_viewState extends State<tab_view> {
                     backgroundColor: Colors.black,
                     lineTouchData: const LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
-                        tooltipBgColor: Colors.white,
                         tooltipMargin: 10,
                       ),
                       handleBuiltInTouches: false,
@@ -235,7 +228,6 @@ class _tab_viewState extends State<tab_view> {
                     backgroundColor: Colors.black,
                     lineTouchData: const LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
-                        tooltipBgColor: Colors.white,
                         tooltipMargin: 10,
                       ),
                       handleBuiltInTouches: false,
@@ -340,7 +332,6 @@ class _tab_viewState extends State<tab_view> {
                     backgroundColor: Colors.black,
                     lineTouchData: const LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
-                        tooltipBgColor: Colors.white,
                         tooltipMargin: 10,
                       ),
                       handleBuiltInTouches: false,
@@ -379,7 +370,6 @@ class _tab_viewState extends State<tab_view> {
                     backgroundColor: Colors.black,
                     lineTouchData: const LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
-                        tooltipBgColor: Colors.white,
                         tooltipMargin: 10,
                       ),
                       handleBuiltInTouches: false,
@@ -418,7 +408,6 @@ class _tab_viewState extends State<tab_view> {
                     backgroundColor: Colors.black,
                     lineTouchData: const LineTouchData(
                       touchTooltipData: LineTouchTooltipData(
-                        tooltipBgColor: Colors.white,
                         tooltipMargin: 10,
                       ),
                       handleBuiltInTouches: false,

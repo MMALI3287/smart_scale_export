@@ -12,6 +12,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'dart:ui' as ui;
 import 'package:fl_chart/fl_chart.dart';
+// ignore: unused_import
 import 'package:smart_scale_export/main.dart';
 
 class WeeklyTabs extends StatefulWidget {
@@ -71,7 +72,6 @@ class _WeeklyTabsState extends State<WeeklyTabs> {
                       backgroundColor: Colors.black,
                       lineTouchData: const LineTouchData(
                         touchTooltipData: LineTouchTooltipData(
-                          tooltipBgColor: Colors.white,
                           tooltipMargin: 10,
                         ),
                         handleBuiltInTouches: false,
@@ -114,7 +114,6 @@ class _WeeklyTabsState extends State<WeeklyTabs> {
                       backgroundColor: Colors.black,
                       lineTouchData: const LineTouchData(
                         touchTooltipData: LineTouchTooltipData(
-                          tooltipBgColor: Colors.white,
                           tooltipMargin: 10,
                         ),
                         handleBuiltInTouches: false,
@@ -157,7 +156,6 @@ class _WeeklyTabsState extends State<WeeklyTabs> {
                       backgroundColor: Colors.black,
                       lineTouchData: const LineTouchData(
                         touchTooltipData: LineTouchTooltipData(
-                          tooltipBgColor: Colors.white,
                           tooltipMargin: 10,
                         ),
                         handleBuiltInTouches: false,
@@ -280,7 +278,9 @@ class _WeeklyTabsState extends State<WeeklyTabs> {
         onLayout: (PdfPageFormat format) async => doc.save());
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const tab_view()),
+      MaterialPageRoute(
+        builder: (context) => const TabView(),
+      ),
     );
   }
 

@@ -72,7 +72,6 @@ class _MonthlyTabsState extends State<MonthlyTabs> {
                       backgroundColor: Colors.black,
                       lineTouchData: const LineTouchData(
                         touchTooltipData: LineTouchTooltipData(
-                          tooltipBgColor: Colors.white,
                           tooltipMargin: 10,
                         ),
                         handleBuiltInTouches: false,
@@ -157,7 +156,6 @@ class _MonthlyTabsState extends State<MonthlyTabs> {
                       backgroundColor: Colors.black,
                       lineTouchData: const LineTouchData(
                         touchTooltipData: LineTouchTooltipData(
-                          tooltipBgColor: Colors.white,
                           tooltipMargin: 10,
                         ),
                         handleBuiltInTouches: false,
@@ -225,7 +223,7 @@ class _MonthlyTabsState extends State<MonthlyTabs> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const tab_view(),
+                      builder: (context) => const TabView(),
                     ),
                   );
                 },
@@ -274,7 +272,9 @@ class _MonthlyTabsState extends State<MonthlyTabs> {
         onLayout: (PdfPageFormat format) async => doc.save());
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const tab_view()),
+      MaterialPageRoute(
+        builder: (context) => const TabView(),
+      ),
     );
   }
 

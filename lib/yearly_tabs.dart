@@ -269,7 +269,9 @@ class _YearlyTabsState extends State<YearlyTabs> {
         onLayout: (PdfPageFormat format) async => doc.save());
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const tab_view()),
+      MaterialPageRoute(
+        builder: (context) => const TabView(),
+      ),
     );
   }
 
